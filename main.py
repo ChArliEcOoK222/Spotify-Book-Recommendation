@@ -1,5 +1,5 @@
-# How do I write this to a .txt file?
-
+# How do I run this in a bash script?
+# How do I add this to a Alfred workflow?
 
 # Libraries required for functionality
 import spotipy
@@ -7,6 +7,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import os
 import openai
 from openai import OpenAI
+import pyperclip
 
 # Clear the terminal/shell
 os.system('clear')
@@ -46,10 +47,12 @@ listening_history()
 # Using GPT 4.1 to match the user's personality description and the main themes of their most listened to artists to books
 response = client.chat.completions.create(
     model="gpt-4.1",
-    messages=[{"role": "user", "content": f"Based on the following list of my top 10 artists and description of my personality, match the main themes of these artists with the main themes of books recommended to my personality. Order these books in a numbered list based on my preference for these. The list should only include the book name and author: {top_artists_list} and {personality_description}."}],
+    messages=[{"role": "user", "content": f"Based on the following list of my top 10 artists and description of my personality, match the main themes of these artists with the main themes of books recommended to my personality. Order these books in a numbered list based on my preference for these. The list should only include the book name and author, no reasons for why it is recommended or the themes of the book in brackets below, also do not add an introductory message, just get straight into the list: {top_artists_list} and {personality_description}."}],
     max_tokens=4096,
     n=1
 )
 
 # Accessing the message content of the output and saving it to a variable
 response_message = response.choices[0].message.content
+# Copying the response_message to clipboard 
+pyperclip.copy(response_message)
